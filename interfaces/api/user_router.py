@@ -1,12 +1,19 @@
+import datetime
 from typing import Optional
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Response
 from pydantic import BaseModel
 from pymysql import Connection
 
 from application.services.user_services import UserService
 from infrastructure.db.mySQL import mysql_conn
+from .user_deps import check_session
 
 router = APIRouter(prefix="/user", tags=["user"])
+
+
+class LogIn(BaseModel):
+    login: str
+    password: str
 
 
 class User(BaseModel):
@@ -25,8 +32,29 @@ class UserUpdatePatch(BaseModel):
     password: Optional[str] = None
 
 
+@router.post("/login")
+async def login(resp: Response, user: LogIn, conn: Connection = Depends(mysql_conn)):
+    service = UserService(conn)
+    res = service.authorization(login=user.login, password=user.password)
+    if res is None:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    else:
+        resp.status_code = 200
+        resp.set_cookie(
+            key="session_id",
+            value=res,
+            httponly=True,
+            expires=datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=1)
+        )
+        return {"detail": "Successfully logged in"}
+
+
 @router.get("/get_user_by_id/{user_id}")
-async def get_user(user_id: int, conn: Connection = Depends(mysql_conn)):
+async def get_user(
+    user_id: int,
+    conn: Connection = Depends(mysql_conn),
+    session: str = Depends(check_session)
+):
     service = UserService(conn)
     user = service.get_user_by_id(user_id)
     if user is None:
@@ -38,7 +66,8 @@ async def get_user(user_id: int, conn: Connection = Depends(mysql_conn)):
 async def get_users(
     limit: Optional[int] = 10,
     page: Optional[int] = 1,
-    conn: Connection = Depends(mysql_conn)
+    conn: Connection = Depends(mysql_conn),
+    session: str = Depends(check_session)
 ):
     service = UserService(conn)
     users = service.get_all_users()
@@ -61,7 +90,10 @@ async def create_user(user: User, conn: Connection = Depends(mysql_conn)) -> Opt
     created_user = service.create_user(
         user.first_name, user.last_name, user.login, user.email, user.password
     )
+    if created_user is None:
+        raise HTTPException(status_code=500, detail="Failed to create user")
     return User(**created_user)
+
 
 
 @router.put("/{user_id}", response_model=User, summary="Полное обновление пользователя")

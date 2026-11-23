@@ -1,5 +1,8 @@
 from contextlib import contextmanager
 from typing import Iterator
+from contextlib import contextmanager
+from typing import Iterator
+
 
 import pymysql
 from pymysql.connections import Connection
@@ -14,6 +17,14 @@ except ImportError as e:
 
 
 def mysql_conn() -> Iterator[Connection]:
+    conn = pymysql.connect(**DB_CONFIG)
+    try:
+        yield conn
+    finally:
+        conn.close()
+
+@contextmanager
+def get_async_conn() -> Iterator[Connection]:
     conn = pymysql.connect(**DB_CONFIG)
     try:
         yield conn
