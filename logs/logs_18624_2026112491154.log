@@ -1,0 +1,12 @@
+Python install manager was successfully updated to 26.4.
+
+Please see https://github.com/python/pymanager/releases/tag/26.4 for all changes.
+
+********************************************************************************
+The signature for https://www.python.org/ftp/python/index-windows.json was successfully verified.
+Installing Python 3.15.2.
+Downloading: ..................................................................✅
+Extracting: ...................................................................✅
+To see all available commands, run 'py help'
+********************************************************************************
+C:\WINDOWS\system32\config\systemprofile\AppData\Local\Python\pythoncore-3.15-64\python.exe: No module named uvicorn
