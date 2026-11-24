@@ -1,0 +1,51 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 201, in _run_module_as_main
+  File "<frozen runpy>", line 87, in _run_code
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\uvicorn\__main__.py", line 4, in <module>
+    uvicorn.main()
+    ~~~~~~~~~~~~^^
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\click\core.py", line 1653, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\click\core.py", line 1560, in main
+    rv = self.invoke(ctx)
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\click\core.py", line 1414, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\click\core.py", line 911, in invoke
+    return callback(*args, **kwargs)
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\uvicorn\main.py", line 448, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<49 lines>...
+        reset_contextvars=reset_contextvars,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\uvicorn\main.py", line 620, in run
+    config.load_app()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\uvicorn\config.py", line 434, in load_app
+    return import_from_string(self.app)
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "C:\мои файлы\Практика\project\.venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\6yJIo4Ka_3JIa\AppData\Local\Programs\Python\Python315\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1389, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1353, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1249, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 857, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 751, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "C:\мои файлы\Практика\project\main.py", line 2, in <module>
+    from interfaces.api.init import router
+  File "C:\мои файлы\Практика\project\interfaces\api\init.py", line 2, in <module>
+    from .user_router import router as user_router
+  File "C:\мои файлы\Практика\project\interfaces\api\user_router.py", line 5, in <module>
+    from pymysql import Connection
+ModuleNotFoundError: No module named 'pymysql'
